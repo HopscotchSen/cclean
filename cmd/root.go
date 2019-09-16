@@ -27,22 +27,25 @@ import (
 
 var timeout time.Duration
 var exclude string
+var port int = 8500
 
 var rootCmd = &cobra.Command{
-	Use:   "cclean [CONSUL_ADDRESS]",
-	Short: "A simple service clean tool for Consul",
+	Use:   "cclean [CONSUL_ADDRESS] --port [CONSUL_PORT]",
+	Short: "A simple service clean tool for Consul, support port.",
 	Long: `
-A simple service clean tool for Consul.`,
+A simple service clean tool for Consul, support port`,
 	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("Consul server port ", port)
 		if len(args) == 1 {
-			cclean.Clean(args[0], exclude, timeout)
+			cclean.Clean(args[0], port, exclude, timeout)
 		} else {
-			cclean.Clean("", exclude, timeout)
+			cclean.Clean("", port, exclude, timeout)
 		}
 	},
 }
 
 func init() {
+	rootCmd.PersistentFlags().IntVar(&port, "port", 8500, "Consul Server port")
 	rootCmd.PersistentFlags().DurationVar(&timeout, "timeout", 3*time.Second, "http timeout")
 	rootCmd.PersistentFlags().StringVar(&exclude, "exclude", "", "exclude consul node ip (eg: 10.20.0.0/16)")
 }

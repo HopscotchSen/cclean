@@ -17,6 +17,7 @@
 package cclean
 
 import (
+	"fmt"
 	"os"
 	"time"
 
@@ -26,12 +27,14 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func Clean(addr, exclude string, timeout time.Duration) {
+func Clean(addr, port int, exclude string, timeout time.Duration) {
 
 	config := api.DefaultConfig()
 	if addr != "" {
 		config.Address = addr
 	}
+	
+	logrus.Infof("Clean input client ===> %s", config.Address)
 
 	client, err := api.NewClient(config)
 	if err != nil {
@@ -70,7 +73,7 @@ func Clean(addr, exclude string, timeout time.Duration) {
 		}
 
 		tmpConfig := api.DefaultConfig()
-		tmpConfig.Address = node.Address + ":8500"
+		tmpConfig.Address = fmt.Sprintf("%s:%d", node.Address, port)
 		tmpClient, err := api.NewClient(tmpConfig)
 		if err != nil {
 			logrus.Errorf("Client: %s create Failed!", tmpConfig.Address)

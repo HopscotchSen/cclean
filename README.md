@@ -14,7 +14,16 @@ Usage:
 Flags:
       --exclude string     exclude consul node ip (eg: 10.20.0.0/16)
   -h, --help               help for cclean
+      --port               consul server port (default 8500)
       --timeout duration   http timeout (default 3s)
+```
+
+## Example
+
+``` sh
+➜  ~ cclean 127.0.0.1:8500
+or
+➜  ~ cclean 127.0.0.1:8501 --port 8501
 ```
 
 If you do not provide consul address default use environment variables.
